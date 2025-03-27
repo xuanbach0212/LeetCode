@@ -52,6 +52,7 @@
     "variant": "cpp",
     "algorithm": "cpp",
     "set": "cpp",
-    "__tree": "cpp"
+    "__tree": "cpp",
+    "map": "cpp"
   }
 }

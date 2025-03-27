@@ -2,6 +2,8 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <map>
+
 using namespace std;
 
 class Solution
@@ -9,18 +11,19 @@ class Solution
 public:
     vector<int> twoSum(vector<int> &nums, int target)
     {
-        // loop through nums
+        // make a map
+        map<int, int> m;
+        // loop nums if right = target - left
         for (int i = 0; i < nums.size(); i++)
         {
-            for (int j = nums.size() - 1; j > i; j--)
+            int right = target - nums[i];
+            // find if right in map -> if find return
+            if (m.find(right) != m.end())
             {
-                // left = el, right = find item with value = target - left
-                if (nums[j] + nums[i] == target)
-                {
-                    // if match return [left, right]
-                    return {i, j};
-                };
+                return {i, m[right]};
             };
+            // if not find insert left for next el
+            m.insert({nums[i], i});
         };
         return {};
     }
