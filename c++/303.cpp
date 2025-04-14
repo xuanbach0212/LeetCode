@@ -9,22 +9,22 @@ using namespace std;
 class NumArray
 {
 private:
-    vector<int> nums;
+    vector<int> prefixSum;
 
 public:
     NumArray(vector<int> &nums)
     {
-        this->nums = nums;
+        int currentSum = 0;
+        for (int num : nums)
+        {
+            currentSum += num;
+            prefixSum.push_back(currentSum);
+        }
     }
 
     int sumRange(int left, int right)
     {
-        int sums = 0;
-        for (int i = left; i <= right; i++)
-        {
-            sums += this->nums[i];
-        }
-        return sums;
+        return prefixSum[right] - ((left > 0) ? prefixSum[left - 1] : 0);
     }
 };
 
