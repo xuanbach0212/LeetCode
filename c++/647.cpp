@@ -11,34 +11,25 @@ class Solution
 public:
     int countSubstrings(string s)
     {
-        int length = s.size();
-        int count = length;
-        int range = 2;
-        string revertString = "";
-        for (int i = length - 1; i >= 0; i--)
+        int count = 0;
+        for (int i = 0; i < s.size(); i++)
         {
-            revertString += s[i];
-        }
-
-        while (range <= length)
-        {
-
-            for (int i = 0; i < length; i++)
+            // odd case
+            int l = i, r = i;
+            while (l >= 0 && r < s.size() && s[l] == s[r])
             {
-                int subStringLen = range;
-                if (range + i > length)
-                {
-                    continue;
-                }
-                string subString = s.substr(i, subStringLen);
-                // revertIndex = len - index - subStringLen
-                string revertSubString = revertString.substr(length - i - subStringLen, subStringLen);
-                if (subString == revertSubString)
-                {
-                    count += 1;
-                }
+                count += 1;
+                l -= 1;
+                r += 1;
             }
-            range++;
+            // even case
+            l = i, r = i + 1;
+            while (l >= 0 && r < s.size() && s[l] == s[r])
+            {
+                count += 1;
+                l -= 1;
+                r += 1;
+            }
         }
         return count;
     }
@@ -47,7 +38,7 @@ public:
 int main()
 {
     Solution solution;
-    string s = "abad";
+    string s = "abc";
     int result = solution.countSubstrings(s);
 
     cout << "Result: " << result << endl;
