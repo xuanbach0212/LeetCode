@@ -12,19 +12,18 @@ public:
     int subarraySum(vector<int> &nums, int k)
     {
         int count = 0;
-        for (int i = 0; i < nums.size(); i++)
+        int currentSum = 0;
+        int different;
+        // make a map like prefixSumMap(currentSum, count to this sum)
+        unordered_map<int, int>
+            prefixSumMap;
+        prefixSumMap.insert({0, 1}); // for base case
+        for (int num : nums)
         {
-            int right = i;
-            int sum = 0;
-            while (right < nums.size())
-            {
-                sum += nums[right];
-                if (sum == k)
-                {
-                    count += 1;
-                }
-                right += 1;
-            }
+            currentSum += num;
+            different = currentSum - k;
+            count += prefixSumMap[different]; // add the sub array count
+            prefixSumMap[currentSum]++;
         }
         return count;
     }
