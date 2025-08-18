@@ -30,6 +30,21 @@ int main()
 {
     Solution solution;
     vector<int> nums = {1, 1, 2, 2, 3, 4, 4, 5};
+    
+    cout << "Original array: ";
+    for (int num : nums) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    int newLength = solution.removeDuplicates(nums);
+    
+    cout << "After removing duplicates: ";
+    for (int num : nums) {
+        cout << num << " ";
+    }
+    cout << endl;
+    cout << "New length: " << newLength << endl;
 
     return 0;
 }
