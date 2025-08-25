@@ -6,6 +6,12 @@
     "map": "cpp",
     "set": "cpp",
     "unordered_map": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "deque": "cpp",
+    "string": "cpp",
+    "__locale": "cpp",
+    "__hash_table": "cpp",
+    "__tree": "cpp",
+    "string_view": "cpp"
   }
 }
