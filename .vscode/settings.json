@@ -12,6 +12,7 @@
     "__locale": "cpp",
     "__hash_table": "cpp",
     "__tree": "cpp",
-    "string_view": "cpp"
+    "string_view": "cpp",
+    "stack": "cpp"
   }
 }
