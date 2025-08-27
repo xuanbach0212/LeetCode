@@ -13,6 +13,7 @@
     "__hash_table": "cpp",
     "__tree": "cpp",
     "string_view": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "sstream": "cpp"
   }
 }
