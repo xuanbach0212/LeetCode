@@ -21,20 +21,22 @@ struct ListNode {
 
 class Solution {
 public:
-  ListNode *deleteMiddle(ListNode *head) {
-    if (!head || !head->next) {
-      return nullptr;
+  // Input: head = [1,2,3,4,5]
+  // Output: [1,3,5,2,4]
+  ListNode *oddEvenList(ListNode *head) {
+    if (!head || !head->next || !head->next->next) {
+      return head;
     }
-
-    ListNode *slow = head, *fast = head, *prev = nullptr;
-    while (fast && fast->next) {
-      prev = slow;
-      slow = slow->next;
-      fast = fast->next->next;
+    ListNode *odd = head;
+    ListNode *even = head->next;
+    ListNode *evenHead = even;
+    while (even && even->next) {
+      odd->next = even->next;
+      odd = odd->next;
+      even->next = odd->next;
+      even = even->next;
     }
-
-    prev->next = slow->next;
-    slow->next = nullptr;
+    odd->next = evenHead;
     return head;
   }
 };
@@ -72,14 +74,16 @@ void freeList(ListNode *head) {
 int main() {
   Solution solution;
   vector<vector<int>> tests = {
-      {1, 3, 4, 7, 1, 2, 6}, {1, 2, 3, 4}, {2, 1}, {5}};
+      {1, 2, 3, 4, 5},
+      {2, 1, 3, 5, 6, 4, 7},
+  };
 
   for (auto &arr : tests) {
     ListNode *head = createList(arr);
     cout << "Before: ";
     printList(head);
 
-    head = solution.deleteMiddle(head);
+    head = solution.oddEvenList(head);
 
     cout << "After:  ";
     printList(head);
