@@ -1,3 +1,5 @@
+//go:build ignore
+
 package main
 
 // Definition for singly-linked list.
@@ -16,7 +18,9 @@ func reverseList(head *ListNode) *ListNode {
 		curr.Next = prev
 		prev = curr
 		curr = tmp
-
 	}
 	return prev
+}
+
+func main() {
 }
