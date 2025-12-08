@@ -2,8 +2,6 @@
 
 package main
 
-import "fmt"
-
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -64,8 +62,4 @@ func main() {
 	}
 	root := BuildTree(vals)
 	result := searchBST(root, 2)
-
-	for result != nil {
-		fmt.Println("val is", result.Val)
-	}
 }
