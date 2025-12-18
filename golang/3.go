@@ -30,15 +30,12 @@ import (
 func lengthOfLongestSubstring(s string) int {
 	l, r := 0, 0
 	longest := 0
-	m := make(map[byte]bool)
+	m := make(map[byte]int)
 	for r < len(s) {
-		if _, exists := m[s[r]]; exists {
-			for m[s[r]] {
-				delete(m, s[l])
-				l++
-			}
+		if idx, exists := m[s[r]]; exists {
+			l = max(idx+1, l)
 		}
-		m[s[r]] = true
+		m[s[r]] = r
 		longest = max(longest, r+1-l)
 		r++
 	}
@@ -46,5 +43,5 @@ func lengthOfLongestSubstring(s string) int {
 }
 
 func main() {
-	fmt.Println("lengthOfLongestSubstring is:", lengthOfLongestSubstring("abcad"))
+	fmt.Println("lengthOfLongestSubstring is:", lengthOfLongestSubstring("pwwkew"))
 }
