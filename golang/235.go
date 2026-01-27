@@ -42,24 +42,18 @@ func BuildTree(vals []*int) *TreeNode {
 func intPtr(v int) *int { return &v }
 
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-	if root == nil {
-		return nil
-	}
+	curr := root
 
-	if root == p || root == q {
-		return root
+	for curr != nil {
+		if p.Val > curr.Val && q.Val > curr.Val {
+			curr = curr.Right
+		} else if p.Val < curr.Val && q.Val < curr.Val {
+			curr = curr.Left
+		} else {
+			return curr
+		}
 	}
-
-	left := lowestCommonAncestor(root.Left, p, q)
-	right := lowestCommonAncestor(root.Right, p, q)
-
-	if left != nil && right != nil {
-		return root
-	}
-	if right != nil {
-		return right
-	}
-	return left
+	return curr
 }
 
 func main() {
@@ -70,5 +64,5 @@ func main() {
 	root := BuildTree(vals)
 	result := lowestCommonAncestor(root, root.Left, root.Right)
 
-	fmt.Println(" lowestCommonAncestor is:", result.Val)
+	fmt.Println("lowestCommonAncestor is:", result.Val)
 }
