@@ -62,23 +62,29 @@ func intPtr(v int) *int { return &v }
 // Input: root = []
 // Output: true
 
-func isBalanced(root *TreeNode) bool {
-	isValid := true
-	var dfs func(node *TreeNode) int
-	dfs = func(node *TreeNode) int {
-		if node == nil {
-			return 0
-		}
-
-		maxL := dfs(node.Left)
-		maxR := dfs(node.Right)
-		if maxL-maxR < -1 || maxL-maxR > 1 {
-			isValid = false
-		}
-		return max(maxL, maxR) + 1
+func dfs(node *TreeNode) int {
+	if node == nil {
+		return 0
 	}
-	dfs(root)
-	return isValid
+
+	maxL := dfs(node.Left)
+	if maxL == -1 {
+		return -1
+	}
+
+	maxR := dfs(node.Right)
+	if maxR == -1 {
+		return -1
+	}
+
+	if maxL-maxR < -1 || maxL-maxR > 1 {
+		return -1
+	}
+	return max(maxL, maxR) + 1
+}
+
+func isBalanced(root *TreeNode) bool {
+	return dfs(root) != -1
 }
 
 func main() {
