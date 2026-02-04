@@ -81,18 +81,23 @@ func intPtr(v int) *int { return &v }
 
 func preorderTraversal(root *TreeNode) []int {
 	res := []int{}
-	var dfs func(node *TreeNode) *TreeNode
-	dfs = func(node *TreeNode) *TreeNode {
-		if node == nil {
-			return nil
+	stack := []*TreeNode{}
+	node := root
+	for len(stack) > 0 || node != nil {
+		for node != nil {
+			res = append(res, node.Val)
+			// most Left
+			stack = append(stack, node)
+			node = node.Left
 		}
+		// mid
+		node = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
 
-		res = append(res, node.Val)
-		dfs(node.Left)
-		dfs(node.Right)
-		return node
+		// right
+		node = node.Right
 	}
-	dfs(root)
+
 	return res
 }
 
