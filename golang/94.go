@@ -82,20 +82,38 @@ func intPtr(v int) *int { return &v }
 // Follow up: Recursive solution is trivial, could you do it iteratively?
 
 func inorderTraversal(root *TreeNode) []int {
+	// res := []int{}
+
+	// var dfs func(node *TreeNode) *TreeNode
+	// dfs = func(node *TreeNode) *TreeNode {
+	// 	if node == nil {
+	// 		return nil
+	// 	}
+	// 	dfs(node.Left)
+	// 	res = append(res, node.Val)
+	// 	dfs(node.Right)
+
+	// 	return node
+	// }
+	// dfs(root)
+	// return res
+
+	// follow up
 	res := []int{}
-
-	var dfs func(node *TreeNode) *TreeNode
-	dfs = func(node *TreeNode) *TreeNode {
-		if node == nil {
-			return nil
+	stack := []*TreeNode{}
+	curr := root
+	for len(stack) > 0 || curr != nil {
+		for curr != nil {
+			stack = append(stack, curr)
+			curr = curr.Left
 		}
-		dfs(node.Left)
-		res = append(res, node.Val)
-		dfs(node.Right)
 
-		return node
+		curr = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		res = append(res, curr.Val)
+		curr = curr.Right
 	}
-	dfs(root)
+
 	return res
 }
 
