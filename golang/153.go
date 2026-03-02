@@ -40,10 +40,10 @@ func findMin(nums []int) int {
 	for l < r {
 		m := l + (r-l)/2
 
-		if nums[l] < nums[r] {
-			r = m - 1
+		if nums[m] > nums[r] {
+			l = m + 1
 		} else {
-			l = m
+			r = m
 		}
 	}
 
