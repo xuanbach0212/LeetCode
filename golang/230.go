@@ -59,7 +59,24 @@ func intPtr(v int) *int { return &v }
 // Output: 3
 
 func kthSmallest(root *TreeNode, k int) int {
-	return
+	stack := []*TreeNode{}
+	curr := root
+
+	for len(stack) > 0 || curr != nil {
+		for curr != nil {
+			stack = append(stack, curr)
+			curr = curr.Left
+		}
+		curr = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		k--
+		if k == 0 {
+			return curr.Val
+		}
+		curr = curr.Right
+
+	}
+	return 0
 }
 
 func main() {
@@ -68,7 +85,7 @@ func main() {
 		intPtr(3), intPtr(5), intPtr(1), intPtr(6), intPtr(2), intPtr(0), intPtr(8), nil, nil, intPtr(7), intPtr(4),
 	}
 	root := BuildTree(vals)
-	result := isValidBST(root)
+	result := kthSmallest(root, 1)
 
-	fmt.Println("isValidBST is:", result)
+	fmt.Println("kthSmallest is:", result)
 }
