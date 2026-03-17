@@ -163,6 +163,49 @@ func construct(grid [][]int) *Node {
 	return res
 }
 
+// follow up
+func contructFollowUp(grid [][]int) *Node {
+	return helper(grid, 0, 0, len(grid))
+}
+
+// use r, c, s to decrease space to decrease space complexity
+func helper(grid [][]int, r, c, s int) *Node {
+	val := grid[r][c]
+	isLeaf := true
+
+	res := &Node{
+		IsLeaf: true,
+		Val:    val == 1,
+	}
+
+	// check if leaf
+	for i := r; i < r+s; i++ {
+		for j := c; j < c+s; j++ {
+			if grid[i][j] != val {
+				isLeaf = false
+				break
+			}
+		}
+		if !isLeaf {
+			break
+		}
+	}
+
+	if isLeaf {
+		return res
+	}
+
+	half := s / 2
+	res.IsLeaf = false
+	res.Val = false
+	res.TopLeft = helper(grid, r, c, half)
+	res.TopRight = helper(grid, r, c+half, half)
+	res.BottomLeft = helper(grid, r+half, c, half)
+	res.BottomRight = helper(grid, r+half, c+half, half)
+
+	return res
+}
+
 func main() {
 	// root = [1,2,3,null,5,null,4]
 	//	vals := []*int{
