@@ -90,7 +90,7 @@ func deleteNodeIterative(root *TreeNode, key int) *TreeNode {
 		}
 	}
 
-	// didnt found key
+	// didnt found fkey
 	if curr == nil {
 		return root
 	}
