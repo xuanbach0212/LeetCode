@@ -77,6 +77,8 @@ func intPtr(v int) *int { return &v }
 func insertIntoBST(root *TreeNode, val int) *TreeNode {
 	// recursive or iterative
 	// recursive
+	// TC: O(log n) because we only go left or right for each node
+	// SC: O(log n) because recursive in call stack = height of BST
 	if root == nil {
 		return &TreeNode{Val: val}
 	}
@@ -89,6 +91,31 @@ func insertIntoBST(root *TreeNode, val int) *TreeNode {
 	}
 
 	return root
+}
+
+func insertIntoBSTiterative(root *TreeNode, val int) *TreeNode {
+	// iterative
+	// TC: O(log n) because we only go left or right for each node
+	// SC: O(1) because we dont create any DS or any recursive stack just make a curr variable
+	if root == nil {
+		return &TreeNode{Val: val}
+	}
+
+	curr := root
+	for {
+		if val > curr.Val && curr.Right != nil {
+			curr = curr.Right
+		} else if val < curr.Val && curr.Left != nil {
+			curr = curr.Left
+		} else {
+			if val > curr.Val {
+				curr.Right = &TreeNode{Val: val}
+			} else {
+				curr.Left = &TreeNode{Val: val}
+			}
+			return root
+		}
+	}
 }
 
 func main() {
