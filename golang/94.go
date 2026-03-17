@@ -109,8 +109,8 @@ func inorderTraversal(root *TreeNode) []int {
 		}
 
 		curr = stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
 		res = append(res, curr.Val)
+		stack = stack[:len(stack)-1]
 		curr = curr.Right
 	}
 
