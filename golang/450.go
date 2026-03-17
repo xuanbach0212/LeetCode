@@ -74,6 +74,76 @@ func deleteNode(root *TreeNode, key int) *TreeNode {
 	return root
 }
 
+func deleteNodeIterative(root *TreeNode, key int) *TreeNode {
+	// i think we need to find parent then find the suitable for replace. father -> suitable
+
+	var father *TreeNode = nil
+	curr := root
+
+	// find father and find the node need to be delete
+	for curr != nil && curr.Val != key {
+		father = curr
+		if key > curr.Val {
+			curr = curr.Right
+		} else {
+			curr = curr.Left
+		}
+	}
+
+	// didnt found key
+	if curr == nil {
+		return root
+	}
+
+	// find suitable node to replace
+	// we have 3 case, if child has one or none, if child has two
+	// if first then replace
+	// if two then in-order successor
+
+	if curr.Left == nil || curr.Right == nil {
+		var newCurr *TreeNode
+		if curr.Left != nil {
+			newCurr = curr.Left
+		} else {
+			newCurr = curr.Right
+		}
+
+		if father == nil {
+			// this one mean the root is the one to delete
+			return newCurr
+		}
+
+		if father.Left == curr {
+			father.Left = newCurr
+		} else {
+			father.Right = newCurr
+		}
+
+	} else {
+		// in-order successor
+		// find then connect successor child and father
+		successor := curr.Right
+		fatherSuccessor := curr
+
+		for successor.Left != nil {
+			fatherSuccessor = successor
+			successor = successor.Left
+		}
+
+		curr.Val = successor.Val
+
+		// this one tricky because, if successor is curr dont have child in the left so. parrent of successor must connect to successor's right child
+		if fatherSuccessor == curr {
+			fatherSuccessor.Right = successor.Right
+		} else {
+			fatherSuccessor.Left = successor.Right
+		}
+
+	}
+
+	return root
+}
+
 func main() {
 	// root = [5,3,6,2,4,null,7], key = 3
 	vals := []*int{
