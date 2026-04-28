@@ -63,15 +63,153 @@ type ListNode struct {
 // 0 <= value <= 109
 // At most 2 * 105 calls will be made to get and put.
 
-type LFUCache struct{}
+type Node struct {
+	prev *Node
+	next *Node
+	val  int
+	key  int
+	freq int
+}
+
+type LinkedList struct {
+	size int
+	tail *Node
+	head *Node
+}
+
+func NewLinkedList() *LinkedList {
+	ll := &LinkedList{}
+	ll.head = &Node{}
+	ll.tail = &Node{prev: ll.head}
+	ll.head.next = ll.tail
+	return ll
+}
+
+func (ll *LinkedList) pushTail(node *Node) {
+	node.prev = ll.tail.prev
+	node.next = ll.tail
+	ll.tail.prev.next = node
+	ll.tail.prev = node
+	ll.size++
+}
+
+func (ll *LinkedList) pushHead(node *Node) {
+	node.prev = ll.head
+	node.next = ll.head.next
+	ll.head.next.prev = node
+	ll.head.next = node
+	ll.size++
+}
+
+func (ll *LinkedList) pop(node *Node) *Node {
+	if ll.length() == 0 {
+		return nil
+	}
+	prev := node.prev
+	next := node.next
+	prev.next = next
+	next.prev = prev
+	ll.size--
+	return node
+}
+
+func (ll *LinkedList) popTail() *Node {
+	if ll.length() == 0 {
+		return nil
+	}
+	node := ll.tail.prev
+	prev := node.prev
+	next := node.next
+	prev.next = next
+	next.prev = prev
+	ll.size--
+	return node
+}
+
+func (ll *LinkedList) popHead() *Node {
+	if ll.length() == 0 {
+		return nil
+	}
+	node := ll.head.next
+	prev := node.prev
+	next := node.next
+	next.prev = prev
+	prev.next = next
+	ll.size--
+	return node
+}
+
+func (ll *LinkedList) length() int {
+	return ll.size
+}
+
+type LFUCache struct {
+	capacity  int
+	cache     map[int]*Node
+	freqCache map[int]*LinkedList
+	minFreq   int
+}
 
 func Constructor(capacity int) LFUCache {
+	return LFUCache{
+		capacity:  capacity,
+		cache:     make(map[int]*Node),
+		freqCache: make(map[int]*LinkedList),
+		minFreq:   0,
+	}
+}
+
+func (this *LFUCache) counter(node *Node) {
+	this.freqCache[node.freq].pop(node)
+
+	if node.freq == this.minFreq && this.freqCache[this.minFreq].length() == 0 {
+		this.minFreq++
+	}
+
+	node.freq++
+	if _, ok := this.freqCache[node.freq]; !ok {
+		this.freqCache[node.freq] = NewLinkedList()
+	}
+	this.freqCache[node.freq].pushHead(node)
 }
 
 func (this *LFUCache) Get(key int) int {
+	node, ok := this.cache[key]
+	if !ok {
+		return -1
+	}
+	this.counter(node)
+	return node.val
 }
 
 func (this *LFUCache) Put(key int, value int) {
+	if this.capacity == 0 {
+		return
+	}
+
+	if node, ok := this.cache[key]; ok {
+		node.val = value
+		this.counter(node)
+		return
+	}
+
+	if len(this.cache) == this.capacity {
+		toRemove := this.freqCache[this.minFreq].popTail()
+		delete(this.cache, toRemove.key)
+	}
+
+	node := &Node{
+		key:  key,
+		val:  value,
+		freq: 1,
+	}
+
+	this.cache[key] = node
+	if _, ok := this.freqCache[1]; !ok {
+		this.freqCache[1] = NewLinkedList()
+	}
+	this.freqCache[1].pushHead(node)
+	this.minFreq = 1
 }
 
 /**
