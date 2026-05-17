@@ -3,22 +3,27 @@ from typing import List
 
 class Solution:
     def makesquare(self, matchsticks: List[int]) -> bool:
-        def backtrack(i: int, sol: List[int]) -> bool:
-            if len(sol) == 4:
-                if sol[0] == sol[1] == sol[2] == sol[3]:
-                    return True
-                return False
+        length = sum(matchsticks) // 4
+        if sum(matchsticks) % 4 != 0:
+            return False
 
+        matchsticks.sort(reverse=True)
+        sides = [0] * 4
+
+        def backtrack(i: int) -> bool:
             if i == len(matchsticks):
-                return False
+                return True
 
-            res = False
-            sol.append(matchsticks[i])
-            res = backtrack(i + 1, sol)
-            sol.pop()
-            return res
+            for j in range(4):
+                if sides[j] + matchsticks[i] <= length:
+                    sides[j] += matchsticks[i]
+                    if backtrack(i + 1):
+                        return True
+                    sides[j] -= matchsticks[i]
 
-        return backtrack(0, [])
+            return False
+
+        return backtrack(0)
 
 
 if __name__ == "__main__":
